@@ -1,0 +1,645 @@
+/* いずみピアノ教室（試作 v2）
+   形はエレガント（明朝の見出し・中央寄せ・唐草）とすっきり（丸ゴシックの本文・角の丸いカード）を混ぜたもの。色は4案：html[data-color="pink"] ピンク×白／"cream" クリーム×キャラメル／"mint" ミント×クリーム／"sunflower" ひまわり
+   色はここの変数だけを使う。--pop は子ども向けのイラストに使う差し色 */
+
+:root,
+html[data-color="pink"] {
+  --bg: #ffffff;
+  --band: #fff2f5;
+  --band-2: #fff8f9;
+  --paper: #ffffff;
+  --ink: #3f3a3c;
+  --muted: #75696d;
+  --accent: #e07a92;
+  --accent-strong: #b24a65;
+  --accent-soft: #fde3ea;
+  --line: #f3dde3;
+  --pop: #7cc2ad;
+  --pop-soft: #e3f4ee;
+}
+
+html[data-color="cream"] {
+  --bg: #fffcf5;
+  --band: #f8efdc;
+  --band-2: #fdf7ea;
+  --paper: #fffefb;
+  --ink: #4a4037;
+  --muted: #7a6e62;
+  --accent: #d9a06b;
+  --accent-strong: #9a6438;
+  --accent-soft: #f6e6d2;
+  --line: #ecdfc8;
+  --pop: #e98f7a;
+  --pop-soft: #fbe4dc;
+}
+
+html[data-color="mint"] {
+  --bg: #fffdf7;
+  --band: #e9f5ef;
+  --band-2: #fbf8ee;
+  --paper: #ffffff;
+  --ink: #33413b;
+  --muted: #64736c;
+  --accent: #6dbb9c;
+  --accent-strong: #357a60;
+  --accent-soft: #d8efe5;
+  --line: #d6e9df;
+  --pop: #f2a08c;
+  --pop-soft: #fde6df;
+}
+
+/* ひまわり：お母さんの今のアイコンから。花びらの黄色・まん中の茶色・葉の緑 */
+html[data-color="sunflower"] {
+  --bg: #fffdf6;
+  --band: #fff3cc;
+  --band-2: #fffaeb;
+  --paper: #ffffff;
+  --ink: #3f3a2f;
+  --muted: #74695a;
+  --accent: #f0b429;
+  --accent-strong: #8a5a12;
+  --accent-soft: #fde9ad;
+  --line: #f0e0b0;
+  --pop: #7fae5a;
+  --pop-soft: #e6f1dc;
+  --btn-bg: #f0b429;
+  --btn-ink: #3f2a05;
+  --ill: #cf8f0e;
+}
+
+:root {
+  --btn-bg: var(--accent-strong);
+  --btn-ink: #ffffff;
+  /* 見出しは明朝で上品に（エレガント案）、本文は丸ゴシックで柔らかく（すっきり案） */
+  --font-head: "Shippori Mincho B1", "Yu Mincho", serif;
+  --font-body: "Zen Maru Gothic", "Noto Sans JP", sans-serif;
+  --radius: 12px;
+  --radius-lg: 18px;
+  --shadow: 0 8px 28px rgba(80, 60, 60, 0.07);
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.9;
+  letter-spacing: 0.02em;
+  -webkit-text-size-adjust: 100%;
+}
+
+img { display: block; max-width: 100%; height: auto; }
+
+a { color: var(--accent-strong); }
+
+h1, h2, h3 { font-family: var(--font-head); font-weight: 600; line-height: 1.5; margin: 0; }
+
+.container { width: 100%; max-width: 1080px; margin: 0 auto; padding: 0 16px; }
+.container.narrow { max-width: 820px; }
+
+/* ---------- ヘッダー（山協と同じく、狭い幅では「メニュー」でプルダウン） ---------- */
+
+.site-header {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 50;
+  background: color-mix(in srgb, var(--bg) 94%, transparent);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--line);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 64px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink);
+  text-decoration: none;
+}
+.brand-text { display: flex; flex-direction: column; line-height: 1.3; }
+.brand-icon { height: 40px; }
+.brand small { color: var(--muted); font-size: 11px; letter-spacing: 0.08em; }
+.brand b { font-family: var(--font-head); font-size: 20px; font-weight: 600; }
+
+.nav-desktop { display: none; align-items: center; gap: 22px; }
+.nav-desktop a,
+.nav-mobile a {
+  color: var(--ink);
+  font-size: 14px;
+  text-decoration: none;
+}
+.nav-desktop a:hover { color: var(--accent-strong); }
+.nav-desktop a[aria-current="page"] {
+  color: var(--accent-strong);
+  box-shadow: inset 0 -2px 0 var(--accent);
+}
+
+.nav-desktop .nav-contact,
+.nav-mobile .nav-contact {
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  color: var(--accent-strong);
+  padding: 6px 18px;
+}
+.nav-desktop .nav-contact[aria-current="page"] { box-shadow: none; background: var(--accent-soft); }
+
+.menu-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  padding: 6px 14px;
+  cursor: pointer;
+}
+.menu-button svg { width: 18px; height: 18px; }
+.menu-button .icon-close { display: none; }
+.menu-button[aria-expanded="true"] .icon-open { display: none; }
+.menu-button[aria-expanded="true"] .icon-close { display: block; }
+
+.nav-mobile {
+  display: none;
+  flex-direction: column;
+  border-top: 1px solid var(--line);
+  padding: 8px 16px 16px;
+  background: var(--paper);
+}
+.nav-mobile.is-open { display: flex; }
+.nav-mobile a {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+  font-size: 15px;
+  padding: 14px 4px;
+}
+.nav-mobile a::after { content: "›"; color: var(--accent); }
+.nav-mobile a[aria-current="page"] { color: var(--accent-strong); font-weight: 700; }
+.nav-mobile .nav-contact { border-bottom: 1px solid var(--accent); margin-top: 12px; justify-content: center; }
+.nav-mobile .nav-contact::after { content: none; }
+
+@media (min-width: 1024px) {
+  .nav-desktop { display: flex; }
+  .menu-button,
+  .nav-mobile,
+  .nav-mobile.is-open { display: none; }
+}
+
+/* ---------- 共通の部品 ---------- */
+
+.section { padding: 64px 0; }
+.section.band { background: var(--band); }
+.section.band-2 { background: var(--band-2); }
+
+.sec-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin-bottom: 32px;
+  font-size: 26px;
+  text-align: center;
+}
+.sec-title .en,
+.page-hero .en {
+  color: var(--accent-strong);
+  font-family: var(--font-head);
+  font-size: 13px;
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+}
+
+.page-hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--band-2);
+  border-bottom: 1px solid var(--line);
+  padding: 40px 0 32px;
+  text-align: center;
+}
+.page-hero h1 { font-size: 28px; }
+.page-hero p { color: var(--muted); margin: 8px 0 0; }
+.page-hero + .section { padding-top: 40px; }
+
+.lead { font-size: 17px; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 12px 26px;
+  text-decoration: none;
+}
+.btn-primary { background: var(--btn-bg); color: var(--btn-ink); }
+.btn-primary:hover { filter: brightness(0.92); }
+.btn-line { background: #06c755; color: #fff; }
+.btn-line:hover { background: #05a847; }
+.btn-ghost { border: 1px solid var(--accent); color: var(--accent-strong); background: var(--paper); }
+
+.text-link {
+  color: var(--accent-strong);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.photo-ph {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  border: 1px dashed var(--accent);
+  border-radius: var(--radius-lg);
+  background:
+    repeating-linear-gradient(135deg, transparent 0 14px, color-mix(in srgb, var(--accent) 8%, transparent) 14px 28px),
+    var(--accent-soft);
+  color: var(--accent-strong);
+  font-size: 13px;
+  line-height: 1.6;
+  padding: 16px;
+  text-align: center;
+}
+
+.proto-note {
+  display: inline-block;
+  background: #fff6d6;
+  border: 1px solid #ecd58a;
+  border-radius: 4px;
+  color: #7a6420;
+  font-family: "Noto Sans JP", sans-serif;
+  font-size: 12px;
+  line-height: 1.6;
+  padding: 2px 8px;
+}
+
+.card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: 24px 20px;
+}
+
+.mt-16 { margin-top: 16px; }
+.mt-32 { margin-top: 32px; }
+
+/* ---------- イラスト（assets/illust の SVG を、色の案に合わせて塗る） ---------- */
+
+.ill {
+  display: block;
+  background: var(--ill, var(--accent));
+  pointer-events: none;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+.ill.pop { background: var(--pop); }
+.ill-lily { aspect-ratio: 220 / 502; -webkit-mask-image: url(../assets/illust/lily-of-the-valley.svg); mask-image: url(../assets/illust/lily-of-the-valley.svg); }
+.ill-clef { aspect-ratio: 95 / 153; -webkit-mask-image: url(../assets/illust/treble-clef-line.svg); mask-image: url(../assets/illust/treble-clef-line.svg); }
+.ill-notes { aspect-ratio: 277 / 272; -webkit-mask-image: url(../assets/illust/music-notes-soft.svg); mask-image: url(../assets/illust/music-notes-soft.svg); }
+.ill-olive { aspect-ratio: 257 / 417; -webkit-mask-image: url(../assets/illust/olive-sprig.svg); mask-image: url(../assets/illust/olive-sprig.svg); }
+.ill-staff { aspect-ratio: 448 / 391; -webkit-mask-image: url(../assets/illust/music-staff-wave.svg); mask-image: url(../assets/illust/music-staff-wave.svg); }
+.ill-piano { aspect-ratio: 700 / 600; -webkit-mask-image: url(../assets/illust/grand-piano-line.svg); mask-image: url(../assets/illust/grand-piano-line.svg); }
+.ill-hands { aspect-ratio: 1100 / 1565; -webkit-mask-image: url(../assets/illust/hands-piano-keys.svg); mask-image: url(../assets/illust/hands-piano-keys.svg); }
+.ill-bird { aspect-ratio: 568 / 551; -webkit-mask-image: url(../assets/illust/hummingbird-line.svg); mask-image: url(../assets/illust/hummingbird-line.svg); }
+
+/* 子ども向けのかわいい線画（assets/illust/kids） */
+.ill-k-bear { aspect-ratio: 225 / 242; -webkit-mask-image: url(../assets/illust/kids/bear-sitting.svg); mask-image: url(../assets/illust/kids/bear-sitting.svg); }
+.ill-k-bird { aspect-ratio: 167 / 192; -webkit-mask-image: url(../assets/illust/kids/bird-parakeet.svg); mask-image: url(../assets/illust/kids/bird-parakeet.svg); }
+.ill-k-rabbit { aspect-ratio: 153 / 289; -webkit-mask-image: url(../assets/illust/kids/rabbit-sitting.svg); mask-image: url(../assets/illust/kids/rabbit-sitting.svg); }
+.ill-k-faces { aspect-ratio: 345 / 360; -webkit-mask-image: url(../assets/illust/kids/kids-faces.svg); mask-image: url(../assets/illust/kids/kids-faces.svg); }
+.ill-k-notes { aspect-ratio: 213 / 155; -webkit-mask-image: url(../assets/illust/kids/notes-jumping.svg); mask-image: url(../assets/illust/kids/notes-jumping.svg); }
+.ill-k-piano { aspect-ratio: 736 / 730; -webkit-mask-image: url(../assets/illust/kids/piano-doodle.svg); mask-image: url(../assets/illust/kids/piano-doodle.svg); }
+.ill-k-heart { aspect-ratio: 250 / 277; -webkit-mask-image: url(../assets/illust/kids/heart-doodle.svg); mask-image: url(../assets/illust/kids/heart-doodle.svg); }
+.ill-k-sunflower { aspect-ratio: 180 / 327; -webkit-mask-image: url(../assets/illust/kids/sunflower.svg); mask-image: url(../assets/illust/kids/sunflower.svg); }
+
+/* 見出しの下の、小さなつぼみの唐草（エレガント案から） */
+.sec-title::after,
+.page-hero h1::after {
+  content: "";
+  display: block;
+  width: 120px;
+  aspect-ratio: 2602 / 561;
+  margin: 10px auto 0;
+  background: var(--ill, var(--accent));
+  -webkit-mask: url(../assets/illust/divider-flourish-bud.svg) center / contain no-repeat;
+  mask: url(../assets/illust/divider-flourish-bud.svg) center / contain no-repeat;
+  opacity: 0.85;
+}
+
+/* ---------- トップのメインビジュアル ---------- */
+
+.hero { position: relative; overflow: hidden; padding: 40px 0 56px; background: var(--band-2); }
+.hero-inner { position: relative; z-index: 1; display: grid; gap: 28px; align-items: center; }
+.hero-photo { min-height: 280px; }
+.hero-text .area { color: var(--muted); font-size: 14px; letter-spacing: 0.12em; margin: 0; }
+.hero-text h1 { font-size: 32px; margin: 4px 0 12px; }
+.hero-text .catch { font-family: var(--font-head); font-size: 18px; margin: 0 0 20px; word-break: auto-phrase; }
+.hero-text .btns { display: flex; flex-wrap: wrap; gap: 12px; }
+/* 写真のふちに、ことりがとまって歌っている */
+.hero-visual { position: relative; margin-top: 40px; }
+@media (min-width: 860px) { .hero-visual { margin-top: 0; } }
+.hero-bird { position: absolute; left: -6px; top: -34px; width: 58px; transform: scaleX(-1); }
+.hero-notes { position: absolute; left: 44px; top: -46px; width: 64px; }
+@media (min-width: 860px) {
+  .hero-bird { left: -18px; top: -44px; width: 76px; }
+  .hero-notes { left: 54px; top: -60px; width: 86px; }
+}
+.hero { padding-top: 56px; }
+
+@media (min-width: 860px) {
+  .hero-inner { grid-template-columns: 1fr 1.1fr; }
+  .hero-photo { min-height: 400px; }
+  .hero-text h1 { font-size: 40px; }
+}
+
+/* ---------- お知らせ ---------- */
+
+.news-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.news-list li { border-bottom: 1px solid var(--line); }
+.news-list a {
+  display: grid;
+  gap: 2px 20px;
+  color: var(--ink);
+  padding: 16px 4px;
+  text-decoration: none;
+}
+.news-list a:hover .news-title { color: var(--accent-strong); text-decoration: underline; }
+.news-list time { color: var(--accent-strong); font-size: 14px; }
+.news-list .tag {
+  justify-self: start;
+  background: var(--accent-soft);
+  border-radius: 999px;
+  color: var(--accent-strong);
+  font-size: 12px;
+  padding: 0 10px;
+}
+@media (min-width: 720px) {
+  .news-list a { grid-template-columns: 120px 90px 1fr; align-items: center; }
+}
+
+.news-article { padding-bottom: 32px; border-bottom: 1px solid var(--line); margin-bottom: 32px; }
+.news-article h2 { font-size: 22px; margin: 4px 0 12px; }
+.news-article .photo-ph { min-height: 220px; margin: 16px 0; }
+
+/* ---------- トップの案内カード ---------- */
+
+.guide-grid { display: grid; gap: 16px; }
+@media (min-width: 720px) { .guide-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1000px) { .guide-grid { grid-template-columns: repeat(4, 1fr); } }
+
+.guide-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--ink);
+  text-decoration: none;
+}
+.guide-card h3 { font-size: 19px; }
+.guide-card p { color: var(--muted); font-size: 14px; margin: 0; }
+.guide-card .text-link { margin-top: auto; font-size: 14px; }
+.guide-card:hover { border-color: var(--accent); }
+.guide-card .card-illust { height: 64px; align-self: flex-start; margin-bottom: 4px; }
+
+.about-split { display: grid; gap: 24px; align-items: center; }
+.about-piano { width: 200px; max-width: 60%; justify-self: center; }
+@media (min-width: 760px) {
+  .about-split { grid-template-columns: 1.6fr 1fr; gap: 40px; }
+  .about-piano { width: 100%; max-width: 260px; }
+}
+
+.section.has-deco { position: relative; overflow: hidden; }
+.section-deco { position: absolute; opacity: 0.45; }
+.section-deco.notes { right: 16px; top: 28px; width: 72px; }
+.section-deco.jump { right: 20px; top: 32px; width: 84px; opacity: 1; }
+
+/* ---------- 講師紹介（パワフルにいちゃんの自己紹介の構図：写真の横に見出し、下に本文、右下に署名） ---------- */
+
+.letter { position: relative; background: var(--paper); border-radius: var(--radius-lg); box-shadow: var(--shadow); padding: 28px 20px; }
+.letter-deco { position: absolute; right: 18px; top: 18px; width: 34px; }
+.letter-head { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; margin-bottom: 8px; }
+.letter-photo { width: 140px; aspect-ratio: 1; min-height: 0; border-radius: 50%; font-size: 11px; }
+.letter-title { font-size: 23px; line-height: 1.6; }
+.letter-title span { background: linear-gradient(transparent 64%, var(--accent-soft) 64%); }
+.letter p { font-size: 16px; margin: 0.9em 0 0; }
+.letter .signature {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-top: 24px;
+  font-family: var(--font-head);
+  font-size: 22px;
+  line-height: 1.4;
+}
+.letter .signature small { color: var(--muted); font-family: var(--font-body); font-size: 13px; }
+
+@media (min-width: 720px) {
+  .letter { padding: 44px 48px; }
+  .letter-deco { width: 52px; right: 28px; top: 28px; }
+  .letter-head { flex-direction: row; align-items: center; gap: 32px; }
+  .letter-photo { width: 190px; flex-shrink: 0; font-size: 13px; }
+  .letter-title { font-size: 28px; }
+}
+
+.career { list-style: none; margin: 0; padding: 0; }
+.career li { display: flex; gap: 12px; border-bottom: 1px dashed var(--line); padding: 12px 0; }
+.career li::before { content: "♪"; color: var(--accent); }
+
+/* ---------- 活動 ---------- */
+
+.activity { display: grid; gap: 20px; align-items: center; }
+.activity + .activity { margin-top: 48px; }
+.activity .photo-ph { min-height: 220px; }
+.activity h3 { font-size: 21px; margin-bottom: 8px; }
+.activity p { margin: 0; }
+@media (min-width: 760px) {
+  .activity { grid-template-columns: 1fr 1fr; gap: 40px; }
+  .activity:nth-child(even) .photo-ph { order: 2; }
+}
+
+/* ---------- レッスン ---------- */
+
+.course-grid { display: grid; gap: 20px; }
+@media (min-width: 760px) { .course-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.course { display: flex; flex-direction: column; gap: 8px; }
+.course { position: relative; }
+.course-illust { position: absolute; right: 18px; top: 18px; height: 64px; }
+.course h3 { padding-right: 72px; }
+.course .for {
+  align-self: flex-start;
+  background: var(--accent-soft);
+  border-radius: 999px;
+  color: var(--accent-strong);
+  font-size: 13px;
+  padding: 0 12px;
+}
+.course h3 { font-size: 20px; }
+.course p { margin: 0; }
+.course .text-link { margin-top: auto; font-size: 14px; }
+
+.split { display: grid; gap: 24px; align-items: center; }
+.split .photo-ph { min-height: 260px; }
+@media (min-width: 760px) { .split { grid-template-columns: 1fr 1fr; gap: 40px; } }
+
+.points { list-style: none; margin: 16px 0 0; padding: 0; }
+.points li { position: relative; padding: 6px 0 6px 28px; }
+.points li::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 16px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* ---------- 料金・時間（スマホで横スクロールさせない） ---------- */
+
+.price-block + .price-block { margin-top: 28px; }
+.price-block h3 { font-size: 20px; margin-bottom: 6px; }
+.price-block .meta { color: var(--muted); font-size: 14px; margin: 0 0 12px; }
+
+.price-table { width: 100%; border-collapse: collapse; background: var(--paper); font-size: 15px; }
+.price-table th,
+.price-table td { border-bottom: 1px solid var(--line); padding: 12px 8px; text-align: left; vertical-align: top; }
+.price-table th { font-weight: 500; }
+.price-table td { white-space: nowrap; text-align: right; font-weight: 700; }
+.price-table .level { display: block; color: var(--accent-strong); font-size: 12px; }
+.price-table .note { display: block; color: var(--muted); font-size: 13px; font-weight: 400; }
+
+.time-table { width: 100%; border-collapse: collapse; background: var(--paper); }
+.time-table th,
+.time-table td { border-bottom: 1px solid var(--line); padding: 14px 8px; text-align: left; }
+.time-table th { width: 40%; font-weight: 500; }
+
+.rules { display: grid; gap: 16px; }
+@media (min-width: 760px) { .rules { grid-template-columns: repeat(2, 1fr); } }
+.rules h3 { font-size: 18px; margin-bottom: 6px; }
+.rules p { margin: 0; font-size: 15px; }
+
+/* ---------- アクセス ---------- */
+
+.access-list { margin: 0; }
+.access-list div { display: grid; gap: 2px 20px; border-bottom: 1px solid var(--line); padding: 14px 0; }
+.access-list dt { color: var(--accent-strong); font-weight: 700; }
+.access-list dd { margin: 0; }
+@media (min-width: 720px) { .access-list div { grid-template-columns: 160px 1fr; } }
+
+/* ---------- お問い合わせ ---------- */
+
+.contact-ways { display: grid; gap: 20px; }
+@media (min-width: 760px) { .contact-ways { grid-template-columns: 1fr 1.4fr; align-items: start; } }
+.contact-ways h3 { font-size: 19px; margin-bottom: 8px; }
+.contact-ways p { margin: 0 0 16px; }
+
+.form { display: grid; gap: 18px; }
+.form label { display: grid; gap: 6px; font-size: 15px; font-weight: 700; }
+.form .req { color: var(--accent-strong); font-size: 12px; margin-left: 6px; }
+.form input,
+.form select,
+.form textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-weight: 400;
+  padding: 10px 12px;
+}
+.form input:focus,
+.form select:focus,
+.form textarea:focus { outline: 2px solid var(--accent-soft); border-color: var(--accent); }
+.form button {
+  justify-self: start;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+}
+
+.cta-band p { margin: 0 0 20px; }
+.cta-band .btns { display: flex; flex-wrap: wrap; gap: 12px; }
+/* お問い合わせの帯の上に、小鳥の線画 */
+.cta-band { text-align: center; }
+.cta-band .btns { justify-content: center; }
+.cta-band::before {
+  content: "";
+  display: block;
+  width: 84px;
+  aspect-ratio: 568 / 551;
+  margin: 0 auto 12px;
+  background: var(--ill, var(--accent));
+  -webkit-mask: url(../assets/illust/hummingbird-line.svg) center / contain no-repeat;
+  mask: url(../assets/illust/hummingbird-line.svg) center / contain no-repeat;
+}
+
+/* ---------- フッター ---------- */
+
+.site-footer { background: var(--band); border-top: 1px solid var(--line); padding: 40px 0 96px; font-size: 14px; }
+.footer-name { display: flex; align-items: center; gap: 8px; font-family: var(--font-head); font-size: 20px; font-weight: 700; margin: 0; }
+.footer-name .ill { height: 32px; }
+.site-footer p { margin: 4px 0 0; color: var(--muted); }
+.footer-nav { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 20px 0; }
+.footer-nav a { color: var(--ink); text-decoration: none; }
+.footer-nav a:hover { color: var(--accent-strong); text-decoration: underline; }
+.copyright { font-size: 12px; }
+
+/* ---------- 試作だけのデザイン・色の切り替え ---------- */
+
+.proto-switch {
+  position: fixed;
+  left: 12px;
+  bottom: 12px;
+  z-index: 100;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+  max-width: calc(100vw - 24px);
+  background: #2f2a2c;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  color: #fff;
+  font-family: "Noto Sans JP", sans-serif;
+  font-size: 12px;
+  padding: 4px 4px 4px 12px;
+}
+.proto-group { display: inline-flex; align-items: center; gap: 2px; }
+.proto-group > span { margin-right: 4px; color: #bdb3b6; }
+.proto-switch button {
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  color: #d9d2d4;
+  cursor: pointer;
+  font: inherit;
+  padding: 6px 12px;
+}
+.proto-switch button[aria-pressed="true"] { background: #fff; color: #2f2a2c; font-weight: 700; }

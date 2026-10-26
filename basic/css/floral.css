@@ -1,0 +1,138 @@
+/* いずみピアノ教室（試作）：お花のデザイン案
+   html[data-motif="floral"] のときだけ効く。HTML（ボタン・メニューなどの構造）は基本案と同じ
+   写真は assets/photos/floral（出どころと条件は assets/photos/LICENSES.md）
+
+   方針（花の写真を使うサイトの研究から）
+   - 花の写真は「トップ」「ページの見出しの帯」「トップの区切りの帯1本」だけ。カードの中には使わない
+   - 文字は写真の余白に置く。重ねるときは色の案の地色を半透明で（だから色の案を変えても写真は差し替えない）
+   - 写真の角丸は小さく。丸く切ったり、線画を写真に重ねたりしない
+   - 地は白に近づけて、ピンクなどの色は差し色にとどめる */
+
+/* 写真は色の案ごとに合うものを選ぶ（トップのピアノの写真は仮。お母さんの教室の写真が来たら差し替える） */
+html[data-motif="floral"],
+html[data-motif="floral"][data-color="pink"] {
+  --ph-hero: url(../assets/photos/floral/piano-pink-roses-keys.jpg);
+  --ph-band-1: url(../assets/photos/floral/pink-ranunculus-soft.jpg);
+  --ph-band-2: url(../assets/photos/floral/pink-white-ranunculus.jpg);
+  --ph-band-3: url(../assets/photos/floral/white-gypsophila-soft.jpg);
+  --ph-strip: url(../assets/photos/floral/white-gypsophila-soft.jpg);
+}
+html[data-motif="floral"][data-color="cream"] {
+  --ph-hero: url(../assets/photos/floral/piano-yellow-white-roses.jpg);
+  --ph-band-1: url(../assets/photos/floral/cream-roses-warm.jpg);
+  --ph-band-2: url(../assets/photos/floral/white-flowers-greenery-shadow.jpg);
+  --ph-band-3: url(../assets/photos/floral/white-gypsophila-soft.jpg);
+}
+html[data-motif="floral"][data-color="mint"] {
+  --ph-hero: url(../assets/photos/floral/piano-pink-roses-keys.jpg);
+  --ph-band-1: url(../assets/photos/floral/white-peony-eucalyptus.jpg);
+  --ph-band-2: url(../assets/photos/floral/white-flowers-greenery-shadow.jpg);
+  --ph-band-3: url(../assets/photos/floral/white-gypsophila-soft.jpg);
+}
+html[data-motif="floral"][data-color="sunflower"] {
+  --ph-hero: url(../assets/photos/floral/piano-yellow-white-roses.jpg);
+  --ph-band-1: url(../assets/photos/floral/sunflower-soft.jpg);
+  --ph-band-2: url(../assets/photos/floral/cream-roses-warm.jpg);
+  --ph-band-3: url(../assets/photos/floral/white-gypsophila-soft.jpg);
+}
+
+html[data-motif="floral"] {
+  --ph-strip: url(../assets/photos/floral/white-gypsophila-soft.jpg);
+  --photo-radius: 6px;
+  /* 地を白に近づける */
+  --band: color-mix(in srgb, var(--band-2) 60%, #ffffff);
+}
+
+/* ---------- トップ：ピアノと花の写真を大きく1枚 ---------- */
+
+/* 写真のまわりの線画（ことり・音符）は出さない */
+html[data-motif="floral"] .hero-bird,
+html[data-motif="floral"] .hero-notes { display: none; }
+
+html[data-motif="floral"] .hero { background: var(--bg); padding: 0 0 40px; }
+html[data-motif="floral"] .hero-inner { display: flex; flex-direction: column; align-items: stretch; gap: 24px; }
+html[data-motif="floral"] .hero-visual { order: -1; margin: 0 -16px; }
+html[data-motif="floral"] .hero-photo {
+  min-height: 0;
+  aspect-ratio: 4 / 3;
+  border: 0;
+  border-radius: 0;
+  background: var(--ph-hero) center / cover no-repeat;
+  color: transparent;
+}
+
+/* PC：左に文字、右に写真（花に文字を重ねない）。写真の左のふちだけ、地色にやわらかく溶かす */
+@media (min-width: 860px) {
+  html[data-motif="floral"] .hero { min-height: 560px; display: flex; align-items: center; padding: 0; }
+  html[data-motif="floral"] .hero-inner { position: static; display: block; }
+  html[data-motif="floral"] .hero-visual { position: absolute; top: 0; right: 0; bottom: 0; width: 56%; margin: 0; z-index: 0; }
+  html[data-motif="floral"] .hero-photo { height: 100%; aspect-ratio: auto; background-position: 30% center; }
+  html[data-motif="floral"] .hero-visual::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 0%, transparent) 18%);
+  }
+  html[data-motif="floral"] .hero-text { position: relative; z-index: 1; max-width: 40%; }
+}
+
+/* ---------- 下のページの見出しの帯：花の寄りの写真をページごとに回す ---------- */
+
+html[data-motif="floral"] .page-hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 140px;
+  border-bottom: 0;
+  --veil: color-mix(in srgb, var(--bg) 66%, transparent);
+  background:
+    linear-gradient(var(--veil), var(--veil)),
+    var(--ph-band-1) center / cover no-repeat;
+}
+@media (min-width: 720px) { html[data-motif="floral"] .page-hero { min-height: 220px; } }
+
+/* 写真の上には線画を重ねない */
+html[data-motif="floral"] .page-hero h1::after { display: none; }
+html[data-motif="floral"] .page-hero h1 { font-size: 30px; }
+html[data-motif="floral"] .page-hero p { color: var(--ink); }
+
+/* ページごとの写真（ナビの「いまのページ」の印で見分ける） */
+html[data-motif="floral"]:has(.nav-mobile a[aria-current="page"][href="activities.html"]) .page-hero,
+html[data-motif="floral"]:has(.nav-mobile a[aria-current="page"][href="access.html"]) .page-hero,
+html[data-motif="floral"]:has(.nav-mobile a[aria-current="page"][href="contact.html"]) .page-hero {
+  background-image:
+    linear-gradient(var(--veil), var(--veil)),
+    var(--ph-band-2);
+}
+html[data-motif="floral"]:has(.nav-mobile a[aria-current="page"][href="lessons.html"]) .page-hero,
+html[data-motif="floral"]:has(.nav-mobile a[aria-current="page"][href="news.html"]) .page-hero {
+  background-image:
+    linear-gradient(var(--veil), var(--veil)),
+    var(--ph-band-3);
+}
+
+/* ---------- トップの区切り：花の寄りの細い帯を1本だけ（「教室について」の上） ---------- */
+
+html[data-motif="floral"]:has(.nav-mobile a[aria-current="page"][href="index.html"]) main > .section.band::before {
+  content: "";
+  display: block;
+  height: 160px;
+  margin: -64px 0 56px;
+  background: var(--ph-strip) center / cover no-repeat;
+}
+@media (min-width: 720px) {
+  html[data-motif="floral"]:has(.nav-mobile a[aria-current="page"][href="index.html"]) main > .section.band::before { height: 220px; }
+}
+
+/* ---------- 講師紹介：写真は丸く切らず、角を少し丸めた縦長に ---------- */
+
+html[data-motif="floral"] .letter-photo {
+  width: 180px;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--photo-radius);
+}
+@media (min-width: 720px) { html[data-motif="floral"] .letter-photo { width: 220px; } }
+
+/* ---------- 写真の仮の枠も、角を小さく ---------- */
+
+html[data-motif="floral"] .photo-ph { border-radius: var(--photo-radius); }
