@@ -1,7 +1,3 @@
-/* いずみピアノ教室（試作 v2）
-   形はエレガント（明朝の見出し・中央寄せ・唐草）とすっきり（丸ゴシックの本文・角の丸いカード）を混ぜたもの。色は4案：html[data-color="pink"] ピンク×白／"cream" クリーム×キャラメル／"mint" ミント×クリーム／"sunflower" ひまわり
-   色はここの変数だけを使う。--pop は子ども向けのイラストに使う差し色 */
-
 :root,
 html[data-color="pink"] {
   --bg: #ffffff;
@@ -48,7 +44,6 @@ html[data-color="mint"] {
   --pop-soft: #fde6df;
 }
 
-/* ひまわり：お母さんの今のアイコンから。花びらの黄色・まん中の茶色・葉の緑 */
 html[data-color="sunflower"] {
   --bg: #fffdf6;
   --band: #fff3cc;
@@ -70,7 +65,6 @@ html[data-color="sunflower"] {
 :root {
   --btn-bg: var(--accent-strong);
   --btn-ink: #ffffff;
-  /* 見出しは明朝で上品に（エレガント案）、本文は丸ゴシックで柔らかく（すっきり案） */
   --font-head: "Shippori Mincho B1", "Yu Mincho", serif;
   --font-body: "Zen Maru Gothic", "Noto Sans JP", sans-serif;
   --radius: 12px;
@@ -103,8 +97,6 @@ h1, h2, h3 { font-family: var(--font-head); font-weight: 600; line-height: 1.5; 
 
 .container { width: 100%; max-width: 1080px; margin: 0 auto; padding: 0 16px; }
 .container.narrow { max-width: 820px; }
-
-/* ---------- ヘッダー（山協と同じく、狭い幅では「メニュー」でプルダウン） ---------- */
 
 .site-header {
   position: sticky;
@@ -201,8 +193,6 @@ h1, h2, h3 { font-family: var(--font-head); font-weight: 600; line-height: 1.5; 
   .nav-mobile,
   .nav-mobile.is-open { display: none; }
 }
-
-/* ---------- 共通の部品 ---------- */
 
 .section { padding: 64px 0; }
 .section.band { background: var(--band); }
@@ -303,8 +293,7 @@ h1, h2, h3 { font-family: var(--font-head); font-weight: 600; line-height: 1.5; 
 
 .mt-16 { margin-top: 16px; }
 .mt-32 { margin-top: 32px; }
-
-/* ---------- イラスト（assets/illust の SVG を、色の案に合わせて塗る） ---------- */
+.mb-32 { margin-bottom: 32px; }
 
 .ill {
   display: block;
@@ -327,7 +316,6 @@ h1, h2, h3 { font-family: var(--font-head); font-weight: 600; line-height: 1.5; 
 .ill-hands { aspect-ratio: 1100 / 1565; -webkit-mask-image: url(../assets/illust/hands-piano-keys.svg); mask-image: url(../assets/illust/hands-piano-keys.svg); }
 .ill-bird { aspect-ratio: 568 / 551; -webkit-mask-image: url(../assets/illust/hummingbird-line.svg); mask-image: url(../assets/illust/hummingbird-line.svg); }
 
-/* 子ども向けのかわいい線画（assets/illust/kids） */
 .ill-k-bear { aspect-ratio: 225 / 242; -webkit-mask-image: url(../assets/illust/kids/bear-sitting.svg); mask-image: url(../assets/illust/kids/bear-sitting.svg); }
 .ill-k-bird { aspect-ratio: 167 / 192; -webkit-mask-image: url(../assets/illust/kids/bird-parakeet.svg); mask-image: url(../assets/illust/kids/bird-parakeet.svg); }
 .ill-k-rabbit { aspect-ratio: 153 / 289; -webkit-mask-image: url(../assets/illust/kids/rabbit-sitting.svg); mask-image: url(../assets/illust/kids/rabbit-sitting.svg); }
@@ -337,7 +325,6 @@ h1, h2, h3 { font-family: var(--font-head); font-weight: 600; line-height: 1.5; 
 .ill-k-heart { aspect-ratio: 250 / 277; -webkit-mask-image: url(../assets/illust/kids/heart-doodle.svg); mask-image: url(../assets/illust/kids/heart-doodle.svg); }
 .ill-k-sunflower { aspect-ratio: 180 / 327; -webkit-mask-image: url(../assets/illust/kids/sunflower.svg); mask-image: url(../assets/illust/kids/sunflower.svg); }
 
-/* 見出しの下の、小さなつぼみの唐草（エレガント案から） */
 .sec-title::after,
 .page-hero h1::after {
   content: "";
@@ -351,8 +338,6 @@ h1, h2, h3 { font-family: var(--font-head); font-weight: 600; line-height: 1.5; 
   opacity: 0.85;
 }
 
-/* ---------- トップのメインビジュアル ---------- */
-
 .hero { position: relative; overflow: hidden; padding: 40px 0 56px; background: var(--band-2); }
 .hero-inner { position: relative; z-index: 1; display: grid; gap: 28px; align-items: center; }
 .hero-photo { min-height: 280px; }
@@ -360,7 +345,6 @@ h1, h2, h3 { font-family: var(--font-head); font-weight: 600; line-height: 1.5; 
 .hero-text h1 { font-size: 32px; margin: 4px 0 12px; }
 .hero-text .catch { font-family: var(--font-head); font-size: 18px; margin: 0 0 20px; word-break: auto-phrase; }
 .hero-text .btns { display: flex; flex-wrap: wrap; gap: 12px; }
-/* 写真のふちに、ことりがとまって歌っている */
 .hero-visual { position: relative; margin-top: 40px; }
 @media (min-width: 860px) { .hero-visual { margin-top: 0; } }
 .hero-bird { position: absolute; left: -6px; top: -34px; width: 58px; transform: scaleX(-1); }
@@ -376,8 +360,6 @@ h1, h2, h3 { font-family: var(--font-head); font-weight: 600; line-height: 1.5; 
   .hero-photo { min-height: 400px; }
   .hero-text h1 { font-size: 40px; }
 }
-
-/* ---------- お知らせ ---------- */
 
 .news-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
 .news-list li { border-bottom: 1px solid var(--line); }
@@ -405,8 +387,6 @@ h1, h2, h3 { font-family: var(--font-head); font-weight: 600; line-height: 1.5; 
 .news-article { padding-bottom: 32px; border-bottom: 1px solid var(--line); margin-bottom: 32px; }
 .news-article h2 { font-size: 22px; margin: 4px 0 12px; }
 .news-article .photo-ph { min-height: 220px; margin: 16px 0; }
-
-/* ---------- トップの案内カード ---------- */
 
 .guide-grid { display: grid; gap: 16px; }
 @media (min-width: 720px) { .guide-grid { grid-template-columns: repeat(2, 1fr); } }
@@ -436,8 +416,6 @@ h1, h2, h3 { font-family: var(--font-head); font-weight: 600; line-height: 1.5; 
 .section-deco { position: absolute; opacity: 0.45; }
 .section-deco.notes { right: 16px; top: 28px; width: 72px; }
 .section-deco.jump { right: 20px; top: 32px; width: 84px; opacity: 1; }
-
-/* ---------- 講師紹介（パワフルにいちゃんの自己紹介の構図：写真の横に見出し、下に本文、右下に署名） ---------- */
 
 .letter { position: relative; background: var(--paper); border-radius: var(--radius-lg); box-shadow: var(--shadow); padding: 28px 20px; }
 .letter-deco { position: absolute; right: 18px; top: 18px; width: 34px; }
@@ -469,8 +447,6 @@ h1, h2, h3 { font-family: var(--font-head); font-weight: 600; line-height: 1.5; 
 .career li { display: flex; gap: 12px; border-bottom: 1px dashed var(--line); padding: 12px 0; }
 .career li::before { content: "♪"; color: var(--accent); }
 
-/* ---------- 活動 ---------- */
-
 .activity { display: grid; gap: 20px; align-items: center; }
 .activity + .activity { margin-top: 48px; }
 .activity .photo-ph { min-height: 220px; }
@@ -480,8 +456,6 @@ h1, h2, h3 { font-family: var(--font-head); font-weight: 600; line-height: 1.5; 
   .activity { grid-template-columns: 1fr 1fr; gap: 40px; }
   .activity:nth-child(even) .photo-ph { order: 2; }
 }
-
-/* ---------- レッスン ---------- */
 
 .course-grid { display: grid; gap: 20px; }
 @media (min-width: 760px) { .course-grid { grid-template-columns: repeat(2, 1fr); } }
@@ -519,8 +493,6 @@ h1, h2, h3 { font-family: var(--font-head); font-weight: 600; line-height: 1.5; 
   background: var(--accent);
 }
 
-/* ---------- 料金・時間（スマホで横スクロールさせない） ---------- */
-
 .price-block + .price-block { margin-top: 28px; }
 .price-block h3 { font-size: 20px; margin-bottom: 6px; }
 .price-block .meta { color: var(--muted); font-size: 14px; margin: 0 0 12px; }
@@ -543,15 +515,11 @@ h1, h2, h3 { font-family: var(--font-head); font-weight: 600; line-height: 1.5; 
 .rules h3 { font-size: 18px; margin-bottom: 6px; }
 .rules p { margin: 0; font-size: 15px; }
 
-/* ---------- アクセス ---------- */
-
 .access-list { margin: 0; }
 .access-list div { display: grid; gap: 2px 20px; border-bottom: 1px solid var(--line); padding: 14px 0; }
 .access-list dt { color: var(--accent-strong); font-weight: 700; }
 .access-list dd { margin: 0; }
 @media (min-width: 720px) { .access-list div { grid-template-columns: 160px 1fr; } }
-
-/* ---------- お問い合わせ ---------- */
 
 .contact-ways { display: grid; gap: 20px; }
 @media (min-width: 760px) { .contact-ways { grid-template-columns: 1fr 1.4fr; align-items: start; } }
@@ -586,7 +554,6 @@ h1, h2, h3 { font-family: var(--font-head); font-weight: 600; line-height: 1.5; 
 
 .cta-band p { margin: 0 0 20px; }
 .cta-band .btns { display: flex; flex-wrap: wrap; gap: 12px; }
-/* お問い合わせの帯の上に、小鳥の線画 */
 .cta-band { text-align: center; }
 .cta-band .btns { justify-content: center; }
 .cta-band::before {
@@ -600,8 +567,6 @@ h1, h2, h3 { font-family: var(--font-head); font-weight: 600; line-height: 1.5; 
   mask: url(../assets/illust/hummingbird-line.svg) center / contain no-repeat;
 }
 
-/* ---------- フッター ---------- */
-
 .site-footer { background: var(--band); border-top: 1px solid var(--line); padding: 40px 0 96px; font-size: 14px; }
 .footer-name { display: flex; align-items: center; gap: 8px; font-family: var(--font-head); font-size: 20px; font-weight: 700; margin: 0; }
 .footer-name .ill { height: 32px; }
@@ -610,8 +575,6 @@ h1, h2, h3 { font-family: var(--font-head); font-weight: 600; line-height: 1.5; 
 .footer-nav a { color: var(--ink); text-decoration: none; }
 .footer-nav a:hover { color: var(--accent-strong); text-decoration: underline; }
 .copyright { font-size: 12px; }
-
-/* ---------- 試作だけのデザイン・色の切り替え ---------- */
 
 .proto-switch {
   position: fixed;

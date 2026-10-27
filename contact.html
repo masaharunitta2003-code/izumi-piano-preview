@@ -3,6 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="robots" content="noindex, nofollow">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>お問い合わせ｜いずみピアノ教室（神戸市垂水区）</title>
   <meta name="description" content="いずみピアノ教室へのお問い合わせは、LINE またはフォームからどうぞ。">
@@ -60,8 +62,6 @@
             <p>教室の LINE 公式アカウントを友だちに追加して、メッセージをお送りください。</p>
             <a class="btn btn-line" href="#line">LINE で友だち追加</a>
             <p class="mt-16"><span class="proto-note">LINE 公式アカウントのリンクは、あとで差し替えます</span></p>
-
-            <!-- 電話番号を載せる場合はここ。試作では出さない（hidden を外すと表示される） -->
             <div class="contact-tel mt-32" hidden>
               <h3>お電話で問い合わせる</h3>
               <p>000-000-0000</p>
@@ -70,7 +70,7 @@
 
           <div class="card" id="form">
             <h3>フォームで問い合わせる</h3>
-            <form class="form" onsubmit="event.preventDefault(); this.querySelector('.proto-note').hidden = false;">
+            <form class="form">
               <label>お名前<span class="req">必須</span>
                 <input type="text" name="name" autocomplete="name" required>
               </label>
